@@ -38,9 +38,9 @@ The AttackBot is a white-box attacker: it knows the mole's rule and uses the sam
 - **Simulation mode:** a computer player swings at hole 5 with a hidden true probability of 40%, to check that the mole's estimate converges to the true value.
 - **Red-team mode:** runs the table above.
 
-## How to run
+! How to run
 
-**Visual Studio:** open `SneakyMole.sln` and press `Ctrl + F5`.
+Visual Studio: open `SneakyMole.sln` and press `Ctrl + F5`.
 
 **Command line:**
 ```
@@ -50,17 +50,17 @@ g++ -std=c++17 -Wall -Wextra SneakyMole/SneakyMole.cpp -o SneakyMole
 
 Then choose `1` (play), `2` (simulation), or `3` (red-team test).
 
-## What I learned
+! What I learned
 
 - A model can be mathematically correct and still be easy to exploit. The Classic mole's estimates were right, but its decision rule was predictable.
 - Measuring an attack first (71%) made it clear what to fix, and re-running the same attack (34%) showed whether the fix worked.
 - With small amounts of data, estimates are noisy. In simulation, 100 rounds landed anywhere from about 0.32 to 0.45 for a true probability of 0.40.
 
-## Limitations
+! Limitations
 
 - The AttackBot is greedy: it only looks one round ahead. A smarter attacker that plans several rounds ahead might do better against the Unpredictable mole.
 - Each hole's Laplace estimate is a separate yes/no estimate, so the nine values don't add up to 100%. The ranking is the same as a 9-way estimate.
 
-## Background
+! Background
 
-Started as a class assignment on Laplace's rule of succession (from *Algorithms to Live By*, Chapter 6), then extended with the hint feature and the red-team loop. I used Claude as an AI coding assistant for writing code and running the balance simulations. The game idea, the hint feature, and the playtesting were mine.
+Started as a class assignment on Laplace's rule of succession (from *Algorithms to Live By*, Chapter 6), then extended with the hint feature and the red-team loop.
