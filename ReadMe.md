@@ -12,20 +12,20 @@ P(you swing at hole i) = (swings at hole i + 1) / (rounds so far + 2)
 
 The mole commits to a hole **before** you swing, using only past rounds. There are two versions:
 
-| Mole | Hiding rule |
-|---|---|
-| **Classic** | Hide in a least-swung hole (ties broken at random). Explore a random hole 20% of the time. |
+| Mole              | Hiding rule                                                                                                                  |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Classic**       | Hide in a least-swung hole (ties broken at random). Explore a random hole 20% of the time.                                   |
 | **Unpredictable** | Pick any hole at random, weighted by `1 / P(you swing there)`. Holes you rarely hit are more likely, but nothing is certain. |
 
 ## Red-team results
 
 The AttackBot is a white-box attacker: it knows the mole's rule and uses the same swing history the player can see to predict where the mole is hiding. It never sees the mole's actual choice. Each strategy played 10,000 full games (15 rounds, 3 whacks to win):
 
-| Attack strategy | Classic | Unpredictable |
-|---|---|---|
-| Always swing at the same hole | 0.7% | 0.6% |
-| Swing at random | 22.2% | 22.5% |
-| **AttackBot** | **71.3%** | **34.1%** |
+| Attack strategy               | Classic   | Unpredictable |
+| ----------------------------- | --------- | ------------- |
+| Always swing at the same hole | 0.7%      | 0.6%          |
+| Swing at random               | 22.2%     | 22.5%         |
+| **AttackBot**                 | **71.3%** | **34.1%**     |
 
 - Both moles learn your habits: repeating one hole almost never wins.
 - The Classic mole is too predictable. Anyone who knows the rule wins 71% of the time.
@@ -38,11 +38,12 @@ The AttackBot is a white-box attacker: it knows the mole's rule and uses the sam
 - **Simulation mode:** a computer player swings at hole 5 with a hidden true probability of 40%, to check that the mole's estimate converges to the true value.
 - **Red-team mode:** runs the table above.
 
-! How to run
+## How to run
 
-Visual Studio: open `SneakyMole.sln` and press `Ctrl + F5`.
+**Visual Studio:** open `SneakyMole.sln` and press `Ctrl + F5`.
 
 **Command line:**
+
 ```
 g++ -std=c++17 -Wall -Wextra SneakyMole/SneakyMole.cpp -o SneakyMole
 ./SneakyMole
@@ -50,17 +51,17 @@ g++ -std=c++17 -Wall -Wextra SneakyMole/SneakyMole.cpp -o SneakyMole
 
 Then choose `1` (play), `2` (simulation), or `3` (red-team test).
 
-! What I learned
+## What I learned
 
 - A model can be mathematically correct and still be easy to exploit. The Classic mole's estimates were right, but its decision rule was predictable.
 - Measuring an attack first (71%) made it clear what to fix, and re-running the same attack (34%) showed whether the fix worked.
 - With small amounts of data, estimates are noisy. In simulation, 100 rounds landed anywhere from about 0.32 to 0.45 for a true probability of 0.40.
 
-! Limitations
+## Limitations
 
 - The AttackBot is greedy: it only looks one round ahead. A smarter attacker that plans several rounds ahead might do better against the Unpredictable mole.
 - Each hole's Laplace estimate is a separate yes/no estimate, so the nine values don't add up to 100%. The ranking is the same as a 9-way estimate.
 
-! Background
+## Background
 
-Started as a class assignment on Laplace's rule of succession (from *Algorithms to Live By*, Chapter 6), then extended with the hint feature and the red-team loop.
+Started as a class assignment on Laplace's rule of succession (from _Algorithms to Live By_, Chapter 6), then extended with the hint feature and the red-team loop.
